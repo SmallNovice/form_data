@@ -1,11 +1,10 @@
 class VaccinationFormsController < ApplicationController
   skip_before_action :verify_authenticity_token 
-  before_action :get_action 
-  layout false
-  def receive
-    
-    if @action == 'created'
+  before_action :set_action
 
+  def receive
+    case @action
+    when 'created'
       form = VaccinationForm.new(
         response_id: params['response']['id'],
         company:  params['response']['mapped_values']['company']['text_value'].join(),
@@ -15,7 +14,7 @@ class VaccinationFormsController < ApplicationController
         phone: params['response']['mapped_values']['phone']['text_value'].join().to_i
       )
       form.save
-    elsif @action == 'updated'
+    when 'updated'
       form = VaccinationForm.find_by(response_id: params['response']['id'])
       unless form.nil?
         form.update(
@@ -26,17 +25,18 @@ class VaccinationFormsController < ApplicationController
           phone: params['response']['mapped_values']['phone']['text_value'].join().to_i
         )
       end
-    elsif @action == 'destroyed'
+    when 'destroyed'
       form = VaccinationForm.find_by(response_id: params['response']['id'])
       unless form.nil?
         form.destroy
       end
     end
-    head :ok 
+    head :ok if form.nil? 
   end
 
   private
-  def get_action
+
+  def set_action
     @action = request.request_parameters['action']
   end
 end

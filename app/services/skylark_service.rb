@@ -50,5 +50,4 @@ class SkylarkService
   def query_response_url(response_id)
     @host + "/api/v4/responses/#{response_id}"
   end
-
 end
