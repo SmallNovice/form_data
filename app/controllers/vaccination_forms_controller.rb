@@ -7,6 +7,7 @@ class VaccinationFormsController < ApplicationController
     if @action == 'created'
 
       form = VaccinationForm.new(
+        response_id: params['response']['id'],
         company:  params['response']['mapped_values']['company']['text_value'].join(),
         number: params['response']['mapped_values']['number']['text_value'].join(),
         nonumber: params['response']['mapped_values']['nonumber']['text_value'].join(),
@@ -24,6 +25,11 @@ class VaccinationFormsController < ApplicationController
           name: params['response']['mapped_values']['name']['text_value'].join(),
           phone: params['response']['mapped_values']['phone']['text_value'].join().to_i
         )
+      end
+    elsif @action == 'destroyed'
+      form = VaccinationForm.find_by(response_id: params['response']['id'])
+      unless form.nil?
+        form.destroy
       end
     end
     head :ok 
