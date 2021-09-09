@@ -3,7 +3,7 @@ class VaccinationFormsController < ApplicationController
   before_action :set_action
 
   def receive
-    case @action
+    case @response_action
     when 'created'
       form = VaccinationForm.new(
         response_id: params['response']['id'],
@@ -31,12 +31,12 @@ class VaccinationFormsController < ApplicationController
         form.destroy
       end
     end
-    head :ok if form.nil? 
+    head :ok 
   end
 
   private
 
   def set_action
-    @action = request.request_parameters['action']
+    @response_action = request.request_parameters['action']
   end
 end
