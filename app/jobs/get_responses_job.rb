@@ -11,7 +11,7 @@ class GetResponsesJob < ApplicationJob
 
 			ActiveRecord::Base.transaction do
 				JSON.parse(responses).each do |response|
-					VaccinationForm.build(response).save
+					VaccinationForm.upsert(response)
 				end
 			end
 		end

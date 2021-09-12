@@ -4,32 +4,11 @@ class VaccinationFormsController < ApplicationController
 
   def receive
     case @response_action
-    when 'created'
-      form = VaccinationForm.new(
-        response_id: params['response']['id'],
-        company:  params['response']['mapped_values']['company']['text_value'].join(),
-        number: params['response']['mapped_values']['number']['text_value'].join(),
-        nonumber: params['response']['mapped_values']['nonumber']['text_value'].join(),
-        name: params['response']['mapped_values']['name']['text_value'].join(),
-        phone: params['response']['mapped_values']['phone']['text_value'].join().to_i
-      )
-      form.save
-    when 'updated'
-      form = VaccinationForm.find_by(response_id: params['response']['id'])
-      unless form.nil?
-        form.update(
-          company:  params['response']['mapped_values']['company']['text_value'].join(),
-          number: params['response']['mapped_values']['number']['text_value'].join(),
-          nonumber: params['response']['mapped_values']['nonumber']['text_value'].join(),
-          name: params['response']['mapped_values']['name']['text_value'].join(),
-          phone: params['response']['mapped_values']['phone']['text_value'].join().to_i
-        )
-      end
+    when 'created', 'updated'
+      VaccinationForm.upsert(params['response'].permit!)
     when 'destroyed'
-      form = VaccinationForm.find_by(response_id: params['response']['id'])
-      unless form.nil?
-        form.destroy
-      end
+      response = VaccinationForm.find_by(response_id: params['response']['id'])
+      response.destroy if response
     end
     head :ok 
   end

@@ -7,7 +7,7 @@ class SkylarkService
     @appsecret = '4fd078c9fef8ee0f1311e2d1661619c5b87ed9749b038ded3e52d576cfec1fb9'
     @host = 'https://skylarkly.com/'
   end
- 
+
   def query_form_responses(form_id, page = 1, per_page = 24)
     RestClient::Request.execute(
       method: :get,
