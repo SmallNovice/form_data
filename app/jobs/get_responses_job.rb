@@ -4,6 +4,9 @@ class GetResponsesJob < ApplicationJob
 	def perform()
 		flag = true
 		page = 0
+		array_index = 0
+		array = []
+
 		while flag
 			responses = skylark_service.query_form_responses(VaccinationForm.form_id,page += 1)
 			
@@ -11,10 +14,13 @@ class GetResponsesJob < ApplicationJob
 
 			ActiveRecord::Base.transaction do
 				JSON.parse(responses).each do |response|
+					array[array_index] = response['id']
+					array_index += 1
 					VaccinationForm.upsert(response)
 				end
 			end
 		end
+		array
 	end
 
 	private

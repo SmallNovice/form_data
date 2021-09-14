@@ -18,6 +18,20 @@ class VaccinationForm < ApplicationRecord
 		end
 	end
 
+	def self.delete(array)
+		flag_delete = true
+		data_index = 1
+
+		while flag_delete
+			flag_delete = false if data_index == VaccinationForm.last.id
+			vacc = VaccinationForm.find_by(id: data_index)
+			if vacc && (([vacc.response_id] & array).empty?)
+					vacc.destroy
+			end
+			data_index += 1
+		end
+	end
+
   private
 
   def self.form_id
