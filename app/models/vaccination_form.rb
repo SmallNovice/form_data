@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class VaccinationForm < ApplicationRecord
   def self.upsert(params)
     response_id = params['id']

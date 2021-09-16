@@ -1,3 +1,5 @@
+<< << << < HEAD
+
 class GetResponsesJob < ApplicationJob
   queue_as :default
 

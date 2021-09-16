@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class SkylarkService
   attr_reader :appid, :appsecret, :namespace_id, :host
 
@@ -51,3 +52,5 @@ class SkylarkService
     @host + "/api/v4/responses/#{response_id}"
   end
 end
+=======
+>>>>>>> parent of 48b5416... test
