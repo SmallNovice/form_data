@@ -1,3 +1,3 @@
 class CompareData
-  VaccinationForm.delete(GetResponsesJob.new.perform)
+  VaccinationForm.delete(GetResponsesJob.perform_now)
 end

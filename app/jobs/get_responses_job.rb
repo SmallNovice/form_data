@@ -4,7 +4,6 @@ class GetResponsesJob < ApplicationJob
   def perform()
     flag = true
     page = 0
-    array_index = 0
     array = []
 
     while flag
@@ -14,9 +13,8 @@ class GetResponsesJob < ApplicationJob
 
       ActiveRecord::Base.transaction do
         JSON.parse(responses).each do |response|
-          array[array_index] = response['id']
-          array_index += 1
           VaccinationForm.upsert(response)
+          array << response['id']
         end
       end
     end
